@@ -1,0 +1,78 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: perpus-app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8091:8000"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: perpus
+      DB_USERNAME: perpus_user
+      DB_PASSWORD: perpus_pass
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - db
+      - redis
+
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: perpus-queue
+    working_dir: /var/www/html
+    command: sh -lc "until php artisan db:show >/dev/null 2>&1; do sleep 2; done; php artisan queue:work --tries=3"
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: perpus
+      DB_USERNAME: perpus_user
+      DB_PASSWORD: perpus_pass
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - app
+      - db
+      - redis
+
+  db:
+    image: mysql:8.0
+    container_name: perpus-db
+    restart: unless-stopped
+    ports:
+      - "3315:3306"
+    environment:
+      MYSQL_DATABASE: perpus
+      MYSQL_USER: perpus_user
+      MYSQL_PASSWORD: perpus_pass
+      MYSQL_ROOT_PASSWORD: root_perpus
+    volumes:
+      - perpus_mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: perpus-redis
+    restart: unless-stopped
+    ports:
+      - "6398:6379"
+    volumes:
+      - perpus_redis_data:/data
+
+volumes:
+  perpus_mysql_data:
+  perpus_redis_data:
