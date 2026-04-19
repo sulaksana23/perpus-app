@@ -10,6 +10,27 @@ Aplikasi ini dirancang untuk kebutuhan **UKK Rekayasa Perangkat Lunak**: modern,
 
 ---
 
+## Tech Yang Dipakai
+
+- Laravel 12
+- PHP 8.2+
+- Blade Template
+- Tailwind CSS
+- MySQL 8
+- Redis
+- Docker + Docker Compose
+- Spatie Laravel Permission
+- ApexCharts
+- Chart.js
+
+## Dukung Developer
+
+Jika project ini bermanfaat, bisa support di Trakteer:
+
+- https://trakteer.id/bali_techsolution
+
+---
+
 ## 1. Ringkasan Fitur
 
 ### Guest / Tamu
