@@ -8,10 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table): void {
+        $hasBooksTable = Schema::hasTable('books');
+
+        Schema::create('ratings', function (Blueprint $table) use ($hasBooksTable): void {
             $table->id();
             $table->foreignId('member_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
+            $table->foreignId('book_id');
+            if ($hasBooksTable) {
+                $table->foreign('book_id')->references('id')->on('books')->cascadeOnDelete();
+            }
             $table->unsignedTinyInteger('rating');
             $table->text('review')->nullable();
             $table->timestamps();

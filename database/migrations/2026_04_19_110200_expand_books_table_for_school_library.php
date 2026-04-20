@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('books')) {
+            return;
+        }
+
         Schema::table('books', function (Blueprint $table): void {
             if (! Schema::hasColumn('books', 'code')) {
                 $table->string('code')->unique()->nullable()->after('id');
@@ -47,9 +51,21 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (! Schema::hasTable('books')) {
+            return;
+        }
+
         Schema::table('books', function (Blueprint $table): void {
-            $table->dropConstrainedForeignId('category_id');
-            $table->dropColumn(['code', 'publisher', 'rack', 'description', 'cover', 'status', 'price', 'avg_rating', 'popular_score', 'legacy_category']);
+            if (Schema::hasColumn('books', 'category_id')) {
+                $table->dropConstrainedForeignId('category_id');
+            }
+
+            $columns = ['code', 'publisher', 'rack', 'description', 'cover', 'status', 'price', 'avg_rating', 'popular_score', 'legacy_category'];
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('books', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };

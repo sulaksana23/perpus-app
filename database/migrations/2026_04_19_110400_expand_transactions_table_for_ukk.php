@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('transactions')) {
+            return;
+        }
+
         Schema::table('transactions', function (Blueprint $table): void {
             if (! Schema::hasColumn('transactions', 'code')) {
                 $table->string('code')->unique()->nullable()->after('id');
@@ -35,10 +39,24 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (! Schema::hasTable('transactions')) {
+            return;
+        }
+
         Schema::table('transactions', function (Blueprint $table): void {
-            $table->dropConstrainedForeignId('borrow_request_id');
-            $table->dropConstrainedForeignId('approved_by');
-            $table->dropColumn(['code', 'extended_until', 'late_days', 'total_fine', 'book_condition']);
+            if (Schema::hasColumn('transactions', 'borrow_request_id')) {
+                $table->dropConstrainedForeignId('borrow_request_id');
+            }
+            if (Schema::hasColumn('transactions', 'approved_by')) {
+                $table->dropConstrainedForeignId('approved_by');
+            }
+
+            $columns = ['code', 'extended_until', 'late_days', 'total_fine', 'book_condition'];
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('transactions', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };

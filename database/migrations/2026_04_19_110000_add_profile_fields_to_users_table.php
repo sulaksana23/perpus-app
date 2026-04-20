@@ -22,7 +22,7 @@ return new class extends Migration
                 $table->string('photo')->nullable()->after('address');
             }
             if (! Schema::hasColumn('users', 'status')) {
-                $table->string('status')->default('active')->after('is_approved');
+                $table->string('status')->default('active')->after('photo');
             }
         });
     }
@@ -30,7 +30,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            $table->dropColumn(['username', 'phone', 'address', 'photo', 'status']);
+            $columns = ['username', 'phone', 'address', 'photo', 'status'];
+
+            foreach ($columns as $column) {
+                if (Schema::hasColumn('users', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };

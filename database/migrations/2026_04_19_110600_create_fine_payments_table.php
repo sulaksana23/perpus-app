@@ -8,9 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('fine_payments', function (Blueprint $table): void {
+        $hasTransactionsTable = Schema::hasTable('transactions');
+
+        Schema::create('fine_payments', function (Blueprint $table) use ($hasTransactionsTable): void {
             $table->id();
-            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
+            $table->foreignId('transaction_id');
+            if ($hasTransactionsTable) {
+                $table->foreign('transaction_id')->references('id')->on('transactions')->cascadeOnDelete();
+            }
             $table->foreignId('fine_id')->nullable()->constrained('fines')->nullOnDelete();
             $table->foreignId('member_id')->constrained('users')->cascadeOnDelete();
             $table->decimal('amount', 12, 2)->default(0);
