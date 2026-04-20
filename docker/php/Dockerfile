@@ -10,8 +10,9 @@ RUN apt-get update \
         libxml2-dev \
         libpq-dev \
         libsqlite3-dev \
+        # php-pear and php-dev not needed for official PHP image
     && docker-php-ext-install pdo pdo_mysql bcmath intl zip pcntl \
-    && pecl install redis \
+    && pecl install redis-5.3.7 \
     && docker-php-ext-enable redis \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
