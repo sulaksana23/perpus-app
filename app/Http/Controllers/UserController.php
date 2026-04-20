@@ -99,6 +99,7 @@ class UserController extends Controller
      */
     private function roleOptions(): array
     {
+        Role::findOrCreate('super-admin', 'web');
         Role::findOrCreate('admin', 'web');
         Role::findOrCreate('member', 'web');
 

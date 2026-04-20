@@ -8544,7 +8544,7 @@
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "8.3.30"
+        "php": "8.2.0"
     },
     "plugin-api-version": "2.9.0"
 }

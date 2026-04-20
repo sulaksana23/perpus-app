@@ -17,6 +17,7 @@ class AuthAndUserCrudTest extends TestCase
         parent::setUp();
         $this->withoutMiddleware(ValidateCsrfToken::class);
 
+        Role::findOrCreate('super-admin', 'web');
         Role::findOrCreate('admin', 'web');
         Role::findOrCreate('member', 'web');
     }
@@ -37,7 +38,7 @@ class AuthAndUserCrudTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    public function test_guest_can_register_and_get_member_role(): void
+    public function test_guest_can_register_and_get_super_admin_role(): void
     {
         $response = $this->post(route('register.store'), [
             'name' => 'User Baru',
@@ -49,7 +50,7 @@ class AuthAndUserCrudTest extends TestCase
         $response->assertRedirect(route('dashboard'));
 
         $user = User::where('email', 'baru@example.com')->firstOrFail();
-        $this->assertTrue($user->hasRole('member'));
+        $this->assertTrue($user->hasRole('super-admin'));
     }
 
     public function test_admin_can_create_update_and_delete_user(): void

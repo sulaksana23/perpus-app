@@ -36,7 +36,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-        $isAdmin = $user?->hasRole('admin') || $user?->role === 'admin';
+        $isAdmin = $user?->hasAnyRole(['super-admin', 'admin']) || in_array($user?->role, ['super-admin', 'admin'], true);
 
         if ($user && ! $isAdmin && (! $user->is_approved || $user->status !== 'active')) {
             Auth::logout();
@@ -74,7 +74,8 @@ class AuthController extends Controller
             $photoPath = $request->file('photo')->store('profiles', 'public');
         }
 
-        DB::transaction(function () use ($validated, $photoPath): void {
+        $user = DB::transaction(function () use ($validated, $photoPath): User {
+            $superAdminRole = Role::findOrCreate('super-admin', 'web');
 
             $user = User::create([
                 'name' => $validated['name'],
@@ -84,29 +85,26 @@ class AuthController extends Controller
                 'address' => $validated['address'],
                 'photo' => $photoPath,
                 'password' => $validated['password'],
-                'role' => 'member',
-                'is_approved' => false,
-                'status' => 'pending',
+                'role' => 'super-admin',
+                'is_approved' => true,
+                'status' => 'active',
             ]);
-            $user->assignRole(Role::findOrCreate('member', 'web'));
+            $user->assignRole($superAdminRole);
 
-            AccountSubmission::create([
-                'user_id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'notes' => $validated['notes'] ?? null,
-                'status' => 'pending',
-            ]);
+            return $user;
         });
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil. Tunggu persetujuan admin untuk bisa login.');
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil. Akun Anda otomatis menjadi super-admin.');
     }
 
     public function dashboard(Request $request): View
     {
         $user = $request->user();
         $role = $user?->getRoleNames()->implode(', ');
-        $isAdmin = $user?->hasRole('admin') || $user?->role === 'admin';
+        $isAdmin = $user?->hasAnyRole(['super-admin', 'admin']) || in_array($user?->role, ['super-admin', 'admin'], true);
 
         $dashboardData = [];
 

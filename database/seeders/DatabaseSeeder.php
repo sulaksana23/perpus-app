@@ -21,14 +21,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $superAdminRole = Role::findOrCreate('super-admin', 'web');
         $adminRole = Role::findOrCreate('admin', 'web');
         $memberRole = Role::findOrCreate('member', 'web');
 
         $admin = User::query()->updateOrCreate(
             ['email' => 'admin@example.com'],
-            ['name' => 'Admin', 'username' => 'admin', 'password' => 'password123', 'role' => 'admin', 'is_approved' => true, 'status' => 'active']
+            ['name' => 'Admin', 'username' => 'admin', 'password' => 'password123', 'role' => 'super-admin', 'is_approved' => true, 'status' => 'active']
         );
-        $admin->assignRole($adminRole);
+        $admin->syncRoles([$superAdminRole, $adminRole]);
 
         $newUsers = User::factory(5)->create();
         $newUsers->each(function (User $user) use ($memberRole): void {

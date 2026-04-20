@@ -20,16 +20,17 @@ class PromoteUserToAdminSeeder extends Seeder
             return;
         }
 
+        Role::findOrCreate('super-admin', 'web');
         Role::findOrCreate('admin', 'web');
 
         $user->update([
-            'role' => 'admin',
+            'role' => 'super-admin',
             'is_approved' => true,
             'status' => 'active',
         ]);
 
-        $user->syncRoles(['admin']);
+        $user->syncRoles(['super-admin', 'admin']);
 
-        $this->command?->info("User {$email} berhasil dipromosikan menjadi admin.");
+        $this->command?->info("User {$email} berhasil dipromosikan menjadi super-admin.");
     }
 }
