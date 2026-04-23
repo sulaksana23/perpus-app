@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Tutorial 1 start project">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="#f3f7fb"/>
+  <rect x="40" y="30" width="1120" height="90" rx="16" fill="url(#bg)"/>
+  <text x="70" y="85" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Tutorial 1: Menjalankan Project</text>
+
+  <rect x="80" y="160" width="500" height="280" rx="14" fill="#ffffff" stroke="#dbe5ef"/>
+  <text x="110" y="205" fill="#0f172a" font-family="Arial, sans-serif" font-size="24" font-weight="700">Langkah Cepat</text>
+  <text x="110" y="245" fill="#334155" font-family="monospace" font-size="20">cd ~/perpus-app</text>
+  <text x="110" y="280" fill="#334155" font-family="monospace" font-size="20">docker compose up -d --build</text>
+  <text x="110" y="315" fill="#334155" font-family="monospace" font-size="20">docker compose ps</text>
+  <text x="110" y="360" fill="#0f766e" font-family="Arial, sans-serif" font-size="18" font-weight="700">Akses: http://localhost:8091</text>
+
+  <rect x="630" y="160" width="500" height="280" rx="14" fill="#ffffff" stroke="#dbe5ef"/>
+  <text x="660" y="205" fill="#0f172a" font-family="Arial, sans-serif" font-size="24" font-weight="700">Checklist</text>
+  <text x="660" y="245" fill="#334155" font-family="Arial, sans-serif" font-size="20">• Container app, db, redis status Up</text>
+  <text x="660" y="280" fill="#334155" font-family="Arial, sans-serif" font-size="20">• Halaman landing tampil normal</text>
+  <text x="660" y="315" fill="#334155" font-family="Arial, sans-serif" font-size="20">• Tidak ada error 500 di browser</text>
+  <text x="660" y="360" fill="#334155" font-family="Arial, sans-serif" font-size="20">• Lanjut ke tutorial migrate + seed</text>
+</svg>

@@ -16,12 +16,14 @@ class RoleMiddleware
             abort(403, 'Anda belum login.');
         }
 
-        if (empty($roles)) {
+        if ($roles === []) {
             return $next($request);
         }
 
         foreach ($roles as $role) {
-            if ($user->hasRole($role) || $user->role === $role) {
+            $normalizedRole = $role === 'user' ? ['user', 'member'] : [$role];
+
+            if (in_array($user->role, $normalizedRole, true)) {
                 return $next($request);
             }
         }

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Tutorial 2 migrate seed">
+  <defs>
+    <linearGradient id="bg2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="#f3f7fb"/>
+  <rect x="40" y="30" width="1120" height="90" rx="16" fill="url(#bg2)"/>
+  <text x="70" y="85" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Tutorial 2: Setup Database (Migrate + Seed)</text>
+
+  <rect x="80" y="160" width="1040" height="280" rx="14" fill="#ffffff" stroke="#dbe5ef"/>
+  <text x="110" y="205" fill="#0f172a" font-family="Arial, sans-serif" font-size="24" font-weight="700">Perintah yang dijalankan</text>
+  <text x="110" y="245" fill="#334155" font-family="monospace" font-size="20">docker exec perpus-app php artisan migrate --force</text>
+  <text x="110" y="280" fill="#334155" font-family="monospace" font-size="20">docker exec perpus-app php artisan db:seed --force</text>
+  <text x="110" y="315" fill="#334155" font-family="monospace" font-size="20">docker exec perpus-app php artisan storage:link</text>
+
+  <text x="110" y="365" fill="#0f172a" font-family="Arial, sans-serif" font-size="22" font-weight="700">Akun Demo Seeder</text>
+  <text x="110" y="398" fill="#334155" font-family="Arial, sans-serif" font-size="20">Admin: admin@perpus.test / password123</text>
+  <text x="110" y="428" fill="#334155" font-family="Arial, sans-serif" font-size="20">User Aktif: user@perpus.test / password123</text>
+</svg>

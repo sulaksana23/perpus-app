@@ -4,50 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
-use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class LandingController extends Controller
 {
     public function index(Request $request): View
     {
-        $search = $request->string('q')->toString();
-
-        $booksQuery = Book::query()
-            ->with('bookCategory')
-            ->when($search !== '', function ($query) use ($search): void {
-                $query->where(function ($inner) use ($search): void {
-                    $inner->where('title', 'like', "%{$search}%")
-                        ->orWhere('author', 'like', "%{$search}%")
-                        ->orWhere('code', 'like', "%{$search}%");
-                });
-            });
-
-        $latestBooks = (clone $booksQuery)->latest()->limit(8)->get();
-        $popularBooks = Book::query()->orderByDesc('popular_score')->orderByDesc('avg_rating')->limit(8)->get();
-
-        return view('landing.index', [
-            'search' => $search,
-            'latestBooks' => $latestBooks,
-            'popularBooks' => $popularBooks,
-            'categories' => Category::query()->where('is_active', true)->orderBy('name')->get(),
-            'stats' => [
-                'books' => Book::query()->count(),
-                'members' => User::query()->role('member')->count(),
-                'borrowed' => Transaction::query()->whereIn('status', ['dipinjam', 'terlambat'])->count(),
-            ],
-        ]);
-    }
-
-    public function books(Request $request): View
-    {
-        $search = $request->string('q')->toString();
-        $category = $request->string('category')->toString();
+        $search = trim($request->string('q')->toString());
+        $categoryId = $request->integer('category_id');
 
         $books = Book::query()
-            ->with('bookCategory')
+            ->select(['id', 'code', 'title', 'author', 'category_id', 'cover', 'stock', 'created_at'])
+            ->with('category:id,name')
             ->when($search !== '', function ($query) use ($search): void {
                 $query->where(function ($inner) use ($search): void {
                     $inner->where('title', 'like', "%{$search}%")
@@ -55,30 +25,53 @@ class LandingController extends Controller
                         ->orWhere('code', 'like', "%{$search}%");
                 });
             })
-            ->when($category !== '', fn ($query) => $query->whereHas('bookCategory', fn ($q) => $q->where('slug', $category)))
+            ->when($categoryId > 0, fn ($query) => $query->where('category_id', $categoryId))
             ->latest()
-            ->paginate(12)
+            // simplePaginate lebih ringan karena tidak menjalankan total-count query.
+            ->simplePaginate(12)
             ->withQueryString();
 
-        return view('landing.books', [
+        return view('landing.index', [
             'books' => $books,
             'search' => $search,
-            'category' => $category,
-            'categories' => Category::query()->where('is_active', true)->orderBy('name')->get(),
+            'categoryId' => $categoryId,
+            'categories' => Cache::remember('landing_active_categories', now()->addMinutes(15), function () {
+                return Category::query()
+                    ->select(['id', 'name'])
+                    ->where('is_active', true)
+                    ->orderBy('name')
+                    ->get();
+            }),
         ]);
     }
 
-    public function showBook(Book $book): View
+    public function books(Request $request): View
     {
-        $book->load(['bookCategory', 'ratings.member']);
+        return $this->index($request);
+    }
+
+    public function show(Book $book): View
+    {
+        $book->load('category');
 
         return view('landing.book-detail', [
             'book' => $book,
             'relatedBooks' => Book::query()
                 ->whereKeyNot($book->id)
-                ->when($book->category_id, fn ($q) => $q->where('category_id', $book->category_id))
+                ->when($book->category_id, fn ($query) => $query->where('category_id', $book->category_id))
                 ->latest()
-                ->limit(6)
+                ->limit(4)
+                ->get(),
+        ]);
+    }
+
+    public function categories(): View
+    {
+        return view('landing.categories', [
+            'categories' => Category::query()
+                ->withCount('books')
+                ->where('is_active', true)
+                ->orderBy('name')
                 ->get(),
         ]);
     }

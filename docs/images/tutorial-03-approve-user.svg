@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Tutorial 3 approve user">
+  <rect width="1200" height="520" fill="#f3f7fb"/>
+  <rect x="40" y="30" width="1120" height="90" rx="16" fill="#0f766e"/>
+  <text x="70" y="85" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Tutorial 3: ACC Akun User oleh Admin</text>
+
+  <rect x="120" y="170" width="250" height="170" rx="14" fill="#fff" stroke="#cbd5e1"/>
+  <text x="145" y="220" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="700">1. Login Admin</text>
+  <text x="145" y="255" font-family="Arial, sans-serif" font-size="18" fill="#334155">admin@perpus.test</text>
+
+  <rect x="475" y="170" width="250" height="170" rx="14" fill="#fff" stroke="#cbd5e1"/>
+  <text x="500" y="220" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="700">2. Menu ACC Akun</text>
+  <text x="500" y="255" font-family="Arial, sans-serif" font-size="18" fill="#334155">Admin > ACC Akun</text>
+
+  <rect x="830" y="170" width="250" height="170" rx="14" fill="#fff" stroke="#cbd5e1"/>
+  <text x="855" y="220" font-family="Arial, sans-serif" font-size="22" fill="#0f172a" font-weight="700">3. Klik ACC</text>
+  <text x="855" y="255" font-family="Arial, sans-serif" font-size="18" fill="#334155">Status jadi active</text>
+
+  <path d="M390 255 L455 255" stroke="#0f766e" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M745 255 L810 255" stroke="#0f766e" stroke-width="5" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e" />
+    </marker>
+  </defs>
+
+  <rect x="120" y="380" width="960" height="70" rx="12" fill="#ecfeff" stroke="#99f6e4"/>
+  <text x="150" y="425" font-family="Arial, sans-serif" font-size="22" fill="#0f172a">Setelah di-ACC, user bisa login dan mengajukan peminjaman.</text>
+</svg>

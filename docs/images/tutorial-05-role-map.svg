@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Tutorial 5 role access map">
+  <rect width="1200" height="520" fill="#f8fafc"/>
+  <rect x="40" y="30" width="1120" height="90" rx="16" fill="#334155"/>
+  <text x="70" y="85" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Tutorial 5: Peta Akses Role</text>
+
+  <rect x="90" y="160" width="320" height="290" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="120" y="205" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">Guest</text>
+  <text x="120" y="245" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Lihat landing dan buku</text>
+  <text x="120" y="277" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Cari berdasarkan kategori</text>
+  <text x="120" y="309" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Lihat detail buku</text>
+
+  <rect x="440" y="160" width="320" height="290" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="470" y="205" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">User</text>
+  <text x="470" y="245" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Ajukan peminjaman</text>
+  <text x="470" y="277" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Lihat riwayat sendiri</text>
+  <text x="470" y="309" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Lihat kode transaksi</text>
+  <text x="470" y="341" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Profil user</text>
+
+  <rect x="790" y="160" width="320" height="290" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="820" y="205" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">Admin</text>
+  <text x="820" y="245" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Kelola buku & kategori</text>
+  <text x="820" y="277" font-family="Arial, sans-serif" font-size="19" fill="#334155">• ACC akun user</text>
+  <text x="820" y="309" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Proses peminjaman</text>
+  <text x="820" y="341" font-family="Arial, sans-serif" font-size="19" fill="#334155">• Set pengembalian buku</text>
+</svg>
