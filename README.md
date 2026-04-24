@@ -206,6 +206,43 @@ docker exec perpus-app php artisan db:seed --force
 
 ---
 
+## Deploy ke Vercel
+
+Project ini adalah Laravel full-stack, jadi Vercel perlu entrypoint PHP dan build asset Vite.
+Konfigurasi dasar untuk itu sudah disiapkan lewat:
+
+- `vercel.json`
+- `api/index.php`
+- script Composer `vercel`
+
+### Environment variable minimal di Vercel
+
+Isi variable berikut di dashboard Vercel:
+
+- `APP_KEY`
+- `APP_URL`
+- `DB_CONNECTION`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_DATABASE`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+
+Disarankan juga:
+
+- `LOG_CHANNEL=stderr`
+- `CACHE_STORE=array`
+- `SESSION_DRIVER=cookie`
+- `QUEUE_CONNECTION=sync`
+
+### Catatan penting
+
+- Migration database jangan dijalankan otomatis di build. Jalankan manual ke database production Anda.
+- Upload file lokal (`storage/app/public`) tidak cocok untuk Vercel karena filesystem function bersifat read-only/ephemeral saat runtime.
+- Jika ingin cover buku tetap persisten di production, pindahkan storage ke layanan object storage seperti S3 atau Vercel Blob.
+
+---
+
 ## Troubleshooting
 
 ### 1) Error `Unknown column 'status_akun'`
