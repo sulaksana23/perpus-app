@@ -2,7 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "framework": null,
-  "buildCommand": "composer run vercel",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "outputDirectory": "public",
   "functions": {
     "api/index.php": {
