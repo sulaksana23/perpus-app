@@ -25,6 +25,18 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
+        User::query()->updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin Demo',
+                'password' => 'password123',
+                'role' => 'admin',
+                'status_akun' => 'active',
+                'is_approved' => true,
+                'status' => 'active',
+            ],
+        );
+
         $activeUser = User::query()->updateOrCreate(
             ['email' => 'user@perpus.test'],
             [

@@ -10,7 +10,7 @@ class PromoteUserToAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = (string) env('PROMOTE_ADMIN_EMAIL', 'admin@example.com');
+        $email = (string) env('PROMOTE_ADMIN_EMAIL', 'admin@perpus.test');
 
         $user = User::query()->where('email', $email)->first();
 

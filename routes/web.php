@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\LoanRequestController as AdminLoanRequestController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\UserApprovalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'account.active'])->group(function (): void {
 
         Route::resource('books', AdminBookController::class)->except(['show']);
         Route::resource('categories', AdminCategoryController::class)->except(['show']);
+        Route::resource('users', AdminUserController::class)->except(['show']);
 
         Route::get('/users/pending', [UserApprovalController::class, 'index'])->name('users.pending');
         Route::post('/users/{user}/approve', [UserApprovalController::class, 'approve'])->name('users.approve');
@@ -70,5 +72,6 @@ Route::middleware(['auth', 'account.active'])->group(function (): void {
         Route::get('/loans/{borrowing}', [UserLoanController::class, 'show'])->name('loans.show');
 
         Route::get('/profile', [UserProfileController::class, 'index'])->name('profile.index');
+        Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
     });
 });

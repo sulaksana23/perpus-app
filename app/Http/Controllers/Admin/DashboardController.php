@@ -21,7 +21,12 @@ class DashboardController extends Controller
                 'pending_accounts' => User::query()->where('role', 'user')->where('status_akun', 'pending')->count(),
                 'active_loans' => Borrowing::query()->whereIn('status', ['approved', 'borrowed'])->count(),
             ],
-            'latestBorrowings' => Borrowing::query()->with('user')->latest()->limit(8)->get(),
+            'latestBorrowings' => Borrowing::query()
+                ->with('user')
+                ->withCount('details')
+                ->latest()
+                ->limit(8)
+                ->get(),
         ]);
     }
 }
