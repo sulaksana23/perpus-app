@@ -32,7 +32,7 @@ class LoanController extends Controller
 
     public function show(Borrowing $borrowing): View
     {
-        abort_if($borrowing->user_id !== auth()->id(), 403);
+        $this->authorizeBorrowingOwner($borrowing);
 
         $borrowing->load('details.book');
 
@@ -126,5 +126,53 @@ class LoanController extends Controller
         return redirect()
             ->route('user.loans.index')
             ->with('success', "Pengajuan peminjaman berhasil dikirim. Kode transaksi Anda: {$transactionCode}");
+    }
+
+    public function destroy(Borrowing $borrowing): RedirectResponse
+    {
+        $this->authorizeBorrowingOwner($borrowing);
+
+        if ($borrowing->status !== 'pending') {
+            return back()->with('error', 'Hanya pengajuan pending yang bisa dibatalkan.');
+        }
+
+        $transactionCode = $borrowing->transaction_code;
+        $borrowing->delete();
+
+        return redirect()
+            ->route('user.loans.index')
+            ->with('success', "Pengajuan {$transactionCode} berhasil dibatalkan.");
+    }
+
+    public function markReturned(Borrowing $borrowing): RedirectResponse
+    {
+        $this->authorizeBorrowingOwner($borrowing);
+
+        if ($borrowing->status !== 'borrowed') {
+            return back()->with('error', 'Hanya transaksi dipinjam yang bisa dikembalikan.');
+        }
+
+        DB::transaction(function () use ($borrowing): void {
+            $borrowing->load('details');
+
+            foreach ($borrowing->details as $detail) {
+                $book = Book::query()->lockForUpdate()->findOrFail($detail->book_id);
+                $book->increment('stock', $detail->qty);
+            }
+
+            $borrowing->update([
+                'status' => 'returned',
+                'returned_at' => now(),
+            ]);
+        });
+
+        return redirect()
+            ->route('user.loans.show', $borrowing)
+            ->with('success', 'Pengembalian buku berhasil diproses.');
+    }
+
+    private function authorizeBorrowingOwner(Borrowing $borrowing): void
+    {
+        abort_if($borrowing->user_id !== auth()->id(), 403);
     }
 }

@@ -17,7 +17,22 @@
                     <td>{{ $item->return_date?->format('d-m-Y') }}</td>
                     <td>{{ $item->details->count() }}</td>
                     <td><span class="badge text-bg-secondary">{{ $item->status }}</span></td>
-                    <td><a href="{{ route('user.loans.show', $item) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye me-1"></i>Detail</a></td>
+                    <td class="d-flex flex-wrap gap-1">
+                        <a href="{{ route('user.loans.show', $item) }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye me-1"></i>Detail</a>
+                        @if($item->status === 'pending')
+                            <form method="POST" action="{{ route('user.loans.destroy', $item) }}" onsubmit="return confirm('Batalkan pengajuan ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle me-1"></i>Batalkan</button>
+                            </form>
+                        @endif
+                        @if($item->status === 'borrowed')
+                            <form method="POST" action="{{ route('user.loans.return', $item) }}" onsubmit="return confirm('Tandai buku ini sudah dikembalikan?')">
+                                @csrf
+                                <button class="btn btn-sm btn-success"><i class="bi bi-arrow-return-left me-1"></i>Kembalikan</button>
+                            </form>
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr><td colspan="6" class="text-center text-muted">Belum ada riwayat.</td></tr>

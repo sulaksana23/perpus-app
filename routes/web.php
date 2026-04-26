@@ -70,6 +70,8 @@ Route::middleware(['auth', 'account.active'])->group(function (): void {
         Route::get('/loans/create', [UserLoanController::class, 'create'])->name('loans.create');
         Route::post('/loans', [UserLoanController::class, 'store'])->name('loans.store');
         Route::get('/loans/{borrowing}', [UserLoanController::class, 'show'])->name('loans.show');
+        Route::delete('/loans/{borrowing}', [UserLoanController::class, 'destroy'])->name('loans.destroy');
+        Route::post('/loans/{borrowing}/return', [UserLoanController::class, 'markReturned'])->name('loans.return');
 
         Route::get('/profile', [UserProfileController::class, 'index'])->name('profile.index');
         Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');

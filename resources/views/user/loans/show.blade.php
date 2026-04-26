@@ -8,7 +8,22 @@
                 <h5 class="fw-bold mb-1"><i class="bi bi-upc-scan me-2"></i>{{ $borrowing->transaction_code }}</h5>
                 <p class="mb-1 text-muted">Gunakan kode transaksi ini saat verifikasi ke admin.</p>
             </div>
-            <span class="badge text-bg-secondary fs-6">{{ $borrowing->status }}</span>
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <span class="badge text-bg-secondary fs-6">{{ $borrowing->status }}</span>
+                @if($borrowing->status === 'pending')
+                    <form method="POST" action="{{ route('user.loans.destroy', $borrowing) }}" onsubmit="return confirm('Batalkan pengajuan ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle me-1"></i>Batalkan</button>
+                    </form>
+                @endif
+                @if($borrowing->status === 'borrowed')
+                    <form method="POST" action="{{ route('user.loans.return', $borrowing) }}" onsubmit="return confirm('Tandai buku ini sudah dikembalikan?')">
+                        @csrf
+                        <button class="btn btn-sm btn-success"><i class="bi bi-arrow-return-left me-1"></i>Kembalikan</button>
+                    </form>
+                @endif
+            </div>
         </div>
 
         <hr>
